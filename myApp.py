@@ -6,6 +6,7 @@ import requests
 import json
 import pprint
 import asyncio
+import time
 import traceback
 from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
@@ -237,33 +238,39 @@ class App(customtkinter.CTk):
         for i in range(0, len(gameIdArr)):
             newUrlArr.append(f"https://games.roblox.com/v1/games/{gameIdArr[i]}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}")
 
-        with ThreadPoolExecutor(max_workers=25) as pool:
+        with ThreadPoolExecutor(max_workers=5) as pool:
             iterator = pool.map(requests.get, newUrlArr)
+            
 
         for item in iterator:
             newItems.append(item.json())
 
-        with ThreadPoolExecutor(max_workers=25) as pool2:
+        with ThreadPoolExecutor(max_workers=5) as pool2:
             iterator2 = pool2.map(json.dumps, newItems)
 
-        with ThreadPoolExecutor(max_workers=25) as pool3:
+        with ThreadPoolExecutor(max_workers=5) as pool3:
             iterator3 = pool3.map(json.loads, iterator2)
 
         i = 0
+        gridRow = 2
         for response in iterator3:
+            print(response)
             loc = locArr[i]
+            print(loc)
             try:
                 playerCount = response['data'][0]['playing']
                 print(f"{locArr[i]}: {playerCount}")
                 i += 1
                 print('test1')
                 try:
-                    self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{loc}: {playerCount}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-                    self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+                    self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{loc}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                    self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+                    gridRow += 1
                     # self.new_label.configure(text=f'{loc}: {playerCount}')
                 except Exception:
                     print(i)
                     traceback.print_exc()
+                    continue
                 print('test')
             except:
                 i += 1
