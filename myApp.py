@@ -21,7 +21,6 @@ class App(customtkinter.CTk):
         self.image_icon_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "image_icon_light.png")), size=(20, 20))
         self.home_image = customtkinter.CTkImage(dark_image=Image.open(os.path.join(image_path, "RaidEyeT.png")), size=(20, 20))
         self.chat_image = customtkinter.CTkImage(dark_image=Image.open(os.path.join(image_path, "PracEyeT.png")), size=(20, 20))
-        self.add_user_image = customtkinter.CTkImage(dark_image=Image.open(os.path.join(image_path, "add_user_light.png")), size=(20, 20))
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -47,32 +46,22 @@ class App(customtkinter.CTk):
         self.home_frame.grid_columnconfigure(0, weight=1)
 
         self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.large_test_image)
-        self.home_frame_large_image_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+        self.home_frame_large_image_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
-        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="Manual raid check", compound="right")
-        self.home_frame_button_1.grid(row=1, column=0, padx=10, pady=10)
-        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Enable auto check", compound="left")
-        self.home_frame_button_2.grid(row=1, column=1, padx=72, pady=10)
-        self.home_frame_button_3 = customtkinter.CTkButton(self.home_frame, text="CTkButton", compound="top")
-        self.home_frame_button_3.grid(row=3, column=0, padx=20, pady=10)
-        self.home_frame_button_4 = customtkinter.CTkButton(self.home_frame, text="CTkButton", compound="bottom")
-        self.home_frame_button_4.grid(row=4, column=0, padx=20, pady=10)
+        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="Manual raid check")
+        self.home_frame_button_1.grid(row=1, column=0, padx=10, pady=10, sticky="E")
+        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Enable auto check")
+        self.home_frame_button_2.grid(row=1, column=1, padx=90, pady=10, sticky="W")
 
-        # create second frame
         self.second_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-
-        # create third frame
         self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
 
-        # select default frame
         self.select_frame_by_name("home")
 
     def select_frame_by_name(self, name):
-        # set button color for selected button
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
         self.frame_2_button.configure(fg_color=("gray75", "gray25") if name == "frame_2" else "transparent")
 
-        # show selected frame
         if name == "home":
             self.home_frame.grid(row=0, column=1, sticky="nsew")
         else:
@@ -81,10 +70,6 @@ class App(customtkinter.CTk):
             self.second_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.second_frame.grid_forget()
-        if name == "frame_3":
-            self.third_frame.grid(row=0, column=1, sticky="nsew")
-        else:
-            self.third_frame.grid_forget()
 
     def home_button_event(self):
         self.select_frame_by_name("home")
