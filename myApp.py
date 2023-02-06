@@ -214,21 +214,21 @@ class App(customtkinter.CTk):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
     def initial_test(self):
-        randomIndex = random.randint(0, len(gameIdArr) - 1)
-        placeId = gameIdArr[randomIndex]
-        # placeId = gameIdArr[0]
-        gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
+        for i in range(len(gameIdArr)):
+            # randomIndex = random.randint(0, len(gameIdArr) - 1)
+            placeId = gameIdArr[i]
+            gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
 
-        headers = { "accept": "application/json" }
+            headers = { "accept": "application/json" }
 
-        response = requests.get(gameServerList, headers=headers)
-        data = json.dumps(response.json())
-        check = json.loads(data)
-        
-        try:
-            print(f"{locArr[randomIndex]}: {check['data'][0]['playing']}")
-        except:
-            print(f"{locArr[randomIndex]}: 0")
+            response = requests.get(gameServerList, headers=headers)
+            data = json.dumps(response.json())
+            check = json.loads(data)
+            
+            try:
+                print(f"{locArr[i]}: {check['data'][0]['playing']}")
+            except:
+                continue
 
 if __name__ == "__main__":
     app = App()
