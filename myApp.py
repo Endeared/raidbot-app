@@ -5,6 +5,7 @@ import random
 import requests
 import json
 import pprint
+import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
 
@@ -127,6 +128,7 @@ excludeFullGames = False
 limit = 10
 
 class App(customtkinter.CTk):
+
     def __init__(self):
         super().__init__()
         
@@ -216,10 +218,11 @@ class App(customtkinter.CTk):
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
-    def create_label(self, location, players):
-        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{location}: {players}',
-                                                compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+    async def create_label(self, location, players):
+        print('test!')
+        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{location}: {players}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+        print('success!')
 
     def initial_test(self):
 
@@ -246,11 +249,14 @@ class App(customtkinter.CTk):
             try:
                 print(f"{locArr[i]}: {response['data'][0]['playing']}")
                 i += 1
-                create_label(self, locArr[i], response['data'][0]['playing'])
+                print('test1')
+                asyncio.run(self.create_label(self, locArr[i], response['data'][0]['playing']))
+                print('test')
             except:
                 i += 1
                 continue
 
+        
         # print(newUrlArr)
         # for i in range(len(gameIdArr)):
         #     # randomIndex = random.randint(0, len(gameIdArr) - 1)
