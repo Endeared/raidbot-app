@@ -1,4 +1,5 @@
 import customtkinter
+import tkinter
 import os
 from PIL import Image
 
@@ -7,8 +8,8 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         
-        self.deiconify()
         self.title("ClanEye Client")
+        self.iconbitmap('test_images\ClanEyeT.ico')
         self.geometry("700x450")
 
         # set grid layout 1x2
@@ -50,9 +51,9 @@ class App(customtkinter.CTk):
         self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.large_test_image)
         self.home_frame_large_image_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
-        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="Manual raid check")
+        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="MANUAL RAID CHECK", corner_radius=5, font=('Calibri', 12))
         self.home_frame_button_1.grid(row=1, column=0, padx=10, pady=10, sticky="E")
-        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Enable auto check")
+        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
         self.home_frame_button_2.grid(row=1, column=1, padx=90, pady=10, sticky="W")
 
 
