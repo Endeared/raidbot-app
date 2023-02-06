@@ -6,6 +6,7 @@ import requests
 import json
 import pprint
 import asyncio
+import threading
 import time
 import traceback
 from concurrent.futures import ThreadPoolExecutor
@@ -179,7 +180,7 @@ class App(customtkinter.CTk):
 
         self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="MANUAL RAID CHECK", corner_radius=5, font=('Calibri', 12), command=self.initial_test)
         self.home_frame_button_1.grid(row=1, column=0, padx=10, pady=10, sticky="E")
-        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
+        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12), command=self.start_in_bg)
         self.home_frame_button_2.grid(row=1, column=1, padx=90, pady=10, sticky="W")
 
         # self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
@@ -229,23 +230,54 @@ class App(customtkinter.CTk):
         self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
         print('success!')
 
+
+    async def loop_check(self):
+        while True:
+            gridRow = 2
+            for i in range(0, len(gameIdArr)):
+
+                placeId = gameIdArr[i]
+                gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
+
+                headers = {
+                    "accept": "application/json"
+                }
+
+                response = requests.get(gameServerList, headers=headers)
+                data = json.dumps(response.json())
+                check = json.loads(data)
+
+                try:
+                    playerCount = check['data'][0]['playing']
+                    if playerCount > 1:
+                        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{loc}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                        self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+                        gridRow += 1
+                except Exception:
+                    traceback.print_exc()
+
+                await asyncio.sleep(5)
+
+    def start_in_bg(self):
+        asyncio.run(threading.Thread(target=self.loop_check).start())
+
+
+
     def initial_test(self):
 
         self.home_frame.children.clear()
         newItems = []
-        iterator = []
         i = 0
         headers = { "accept": "application/json", 'User-agent': 'ClanEye 1.0' }
 
         for i in range(0, len(gameIdArr)):
             newUrlArr.append(f"https://games.roblox.com/v1/games/{gameIdArr[i]}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}")
 
-        # with ThreadPoolExecutor(max_workers=1) as pool:
-        #     iterator = pool.map(requests.get, newUrlArr)
-        #     time.sleep(1)
-        for checkUrl in newUrlArr:
-            data = requests.get(checkUrl, headers=headers)
-            newItems.append(data.json())
+        with ThreadPoolExecutor(max_workers=5) as pool:
+            iterator = pool.map(requests.get, newUrlArr)
+            
+        for item in iterator:
+            newItems.append(item.json())
 
         with ThreadPoolExecutor(max_workers=100) as pool2:
             iterator2 = pool2.map(json.dumps, newItems)
@@ -260,9 +292,7 @@ class App(customtkinter.CTk):
             loc = locArr[i]
             try:
                 playerCount = response['data'][0]['playing']
-                print(f"{locArr[i]}: {playerCount}")
                 i += 1
-                print('test1')
                 try:
                     self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{loc}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
                     self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
@@ -272,13 +302,10 @@ class App(customtkinter.CTk):
                     print(i)
                     traceback.print_exc()
                     continue
-                print('test')
             except:
                 i += 1
                 continue
         i = 0
-        print(i)
-
         
         # print(newUrlArr)
         # for i in range(len(gameIdArr)):
