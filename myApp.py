@@ -220,15 +220,18 @@ class App(customtkinter.CTk):
         for i in range(len(gameIdArr)):
             newUrlArr.append(f"https://games.roblox.com/v1/games/{gameIdArr[i]}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}")
 
-        with ThreadPoolExecutor(max_workers=100) as pool:
-            iterator = pool.map(requests.get,newUrlArr)
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            iterator = pool.map(requests.get, newUrlArr)
 
+        i = 0
         for response in iterator:
             data = json.dumps(response.json())
-            check = json.loads(data)
+            check = json.loads(response.json())
             try:
                 print(f"{locArr[i]}: {check['data'][0]['playing']}")
+                i += 1
             except:
+                i += 1
                 continue
 
         # print(newUrlArr)
