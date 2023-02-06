@@ -5,6 +5,7 @@ import random
 import requests
 import json
 import pprint
+from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
 
 urlArray = [
@@ -118,6 +119,8 @@ locArr = [
     "Blacksite Ares"
 ]
 
+newUrlArr = []
+
 serverType = 0
 sortOrder = 2
 excludeFullGames = False
@@ -215,20 +218,35 @@ class App(customtkinter.CTk):
 
     def initial_test(self):
         for i in range(len(gameIdArr)):
-            # randomIndex = random.randint(0, len(gameIdArr) - 1)
-            placeId = gameIdArr[i]
-            gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
+            newUrlArr.append(f"https://games.roblox.com/v1/games/{gameIdArr[i]}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}")
 
-            headers = { "accept": "application/json" }
+        with ThreadPoolExecutor(max_workers=100) as pool:
+            iterator = pool.map(requests.get,newUrlArr)
 
-            response = requests.get(gameServerList, headers=headers)
+        for response in iterator:
             data = json.dumps(response.json())
             check = json.loads(data)
-            
             try:
                 print(f"{locArr[i]}: {check['data'][0]['playing']}")
             except:
                 continue
+
+        # print(newUrlArr)
+        # for i in range(len(gameIdArr)):
+        #     # randomIndex = random.randint(0, len(gameIdArr) - 1)
+        #     placeId = gameIdArr[i]
+        #     gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
+
+        #     headers = { "accept": "application/json" }
+
+        #     response = requests.get(gameServerList, headers=headers)
+        #     data = json.dumps(response.json())
+        #     check = json.loads(data)
+            
+        #     try:
+        #         print(f"{locArr[i]}: {check['data'][0]['playing']}")
+        #     except:
+        #         continue
 
 if __name__ == "__main__":
     app = App()
