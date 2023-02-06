@@ -6,6 +6,7 @@ import requests
 import json
 import pprint
 import asyncio
+import traceback
 from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
 
@@ -180,6 +181,9 @@ class App(customtkinter.CTk):
         self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
         self.home_frame_button_2.grid(row=1, column=1, padx=90, pady=10, sticky="W")
 
+        # self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        # self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+
 
         self.prac_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.prac_frame.grid_columnconfigure(0, weight=1)
@@ -218,9 +222,9 @@ class App(customtkinter.CTk):
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
-    async def create_label(self, location, players):
+    def create_label(self, location, numOfPlayers):
         print('test!')
-        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{location}: {players}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{location}: {numOfPlayers}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
         print('success!')
 
@@ -246,15 +250,26 @@ class App(customtkinter.CTk):
 
         i = 0
         for response in iterator3:
+            loc = locArr[i]
             try:
-                print(f"{locArr[i]}: {response['data'][0]['playing']}")
+                playerCount = response['data'][0]['playing']
+                print(f"{locArr[i]}: {playerCount}")
                 i += 1
                 print('test1')
-                asyncio.run(self.create_label(self, locArr[i], response['data'][0]['playing']))
+                try:
+                    self.home_frame.children.clear()
+                    self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{loc}: {playerCount}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                    self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+                    # self.new_label.configure(text=f'{loc}: {playerCount}')
+                except Exception:
+                    print(i)
+                    traceback.print_exc()
                 print('test')
             except:
                 i += 1
                 continue
+        i = 0
+        print(i)
 
         
         # print(newUrlArr)
