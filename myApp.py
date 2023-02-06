@@ -231,7 +231,7 @@ class App(customtkinter.CTk):
         print('success!')
 
 
-    async def loop_check(self):
+    def loop_check(self):
         while True:
             gridRow = 2
             self.home_frame.children.clear()
@@ -247,7 +247,6 @@ class App(customtkinter.CTk):
                 response = requests.get(gameServerList, headers=headers)
                 data = json.dumps(response.json())
                 check = json.loads(data)
-                print(check['data'][0]['playing'])
 
                 try:
                     playerCount = check['data'][0]['playing']
@@ -262,7 +261,8 @@ class App(customtkinter.CTk):
                     continue
 
     def start_in_bg(self):
-        asyncio.run(self.loop_check())
+        checkThread = threading.Thread(target=self.loop_check(), args=[self])
+        checkThread.start()
 
 
 
