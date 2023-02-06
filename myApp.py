@@ -216,20 +216,37 @@ class App(customtkinter.CTk):
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
+    def create_label(self, location, players):
+        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{location}: {players}',
+                                                compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+
     def initial_test(self):
-        for i in range(len(gameIdArr)):
+
+        newItems = []
+        i = 0
+
+        for i in range(0, len(gameIdArr)):
             newUrlArr.append(f"https://games.roblox.com/v1/games/{gameIdArr[i]}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}")
 
-        with ThreadPoolExecutor(max_workers=10) as pool:
+        with ThreadPoolExecutor(max_workers=25) as pool:
             iterator = pool.map(requests.get, newUrlArr)
 
+        for item in iterator:
+            newItems.append(item.json())
+
+        with ThreadPoolExecutor(max_workers=25) as pool2:
+            iterator2 = pool2.map(json.dumps, newItems)
+
+        with ThreadPoolExecutor(max_workers=25) as pool3:
+            iterator3 = pool3.map(json.loads, iterator2)
+
         i = 0
-        for response in iterator:
-            data = json.dumps(response.json())
-            check = json.loads(response.json())
+        for response in iterator3:
             try:
-                print(f"{locArr[i]}: {check['data'][0]['playing']}")
+                print(f"{locArr[i]}: {response['data'][0]['playing']}")
                 i += 1
+                create_label(self, locArr[i], response['data'][0]['playing'])
             except:
                 i += 1
                 continue
