@@ -3,6 +3,114 @@ import tkinter
 import os
 from PIL import Image
 
+urlArray = [
+    "https://www.roblox.com/games/5841467683/Glacian-Factory-RAID",
+    "https://www.roblox.com/games/5361853069/Auroras-Dam-RAID",
+    "https://www.roblox.com/games/6101349068/Blizzard-Outfall-RAID",
+    "https://www.roblox.com/games/5014397267/RAID-Reversal-Compound",
+    "https://www.roblox.com/games/6565314611/RAID-Unity-Outfall",
+    "https://www.roblox.com/games/8771989818/RAID-Reversal-Compound-Remastered",
+    "https://www.roblox.com/games/10141792191/RAID-The-Graveyard",
+    "https://www.roblox.com/games/5847686787/SWORD-Tafes-Pass",
+    "https://www.roblox.com/games/7257291581/RAID-The-Collective",
+    "https://www.roblox.com/games/1427493600/WIJ-Outpost-Indigo-II",
+    "https://www.roblox.com/games/1427580544/WIJ-Outpost-Cerulean-II",
+    "https://www.roblox.com/games/5257899796/WIJ-Marrs-Communications-Relay-FAIRZONE",
+    "https://www.roblox.com/games/4652767371/Raidable-Docks-Fairzone",
+    "https://www.roblox.com/games/2007110262/Port-Maersk-EASY-MODE",
+    "https://www.roblox.com/games/7775216059/RAID-Armageddon-Shipyard",
+    "https://www.roblox.com/games/8249245310/RAID-Vulturist-Tower",
+    "https://www.roblox.com/games/11401909704/RAID-Pride-of-Altaris",
+    "https://www.roblox.com/games/11412621623/RAID-Starfall-Station",
+    "https://www.roblox.com/games/9166246939/RAID-Malora-District",
+    "https://www.roblox.com/games/11117968023/6v6-NEW-Crown-of-Polaris",
+    "https://www.roblox.com/games/8152027924/RSF-Winter-Arvore-II#!/about",
+    "https://www.roblox.com/games/9726482460/Installation-Anchorage",
+    "https://www.roblox.com/games/8046351934/RAID-Dawn-Under-Heaven",
+    "https://www.roblox.com/games/8254413158/Blacksite-Ares"
+]
+
+imgArr = [
+    "https://tr.rbxcdn.com/d7c01ebfc7d898dff08ffedc4b68250f/768/432/Image/Png",
+    "https://tr.rbxcdn.com/03a2f2f0dba2241cf291965879914676/768/432/Image/Png",
+    "https://tr.rbxcdn.com/e6d91b528f99087113ff582b9e5349ad/768/432/Image/Png",
+    "https://tr.rbxcdn.com/e9c71a7684c8e65257a04d4fd4b8c449/768/432/Image/Png",
+    "https://tr.rbxcdn.com/2396c7bb94d7c63f38ded1328f82eaa5/768/432/Image/Png",
+    "https://tr.rbxcdn.com/965465bfea5161e703010834a53e3577/768/432/Image/Png",
+    "https://t7.rbxcdn.com/5c66ba63087a3dd4cfa7b5c4717f6065",
+    "https://tr.rbxcdn.com/bab82f223d8d05f7068cc0e2b168a411/768/432/Image/Png",
+    "https://tr.rbxcdn.com/1f89fc2b5c0234f5c3871a2405aa8a26/768/432/Image/Png",
+    "https://tr.rbxcdn.com/f27bca028fdbdaaae5e14561599d2bfb/768/432/Image/Png",
+    "https://tr.rbxcdn.com/808605d3b34c74bf02c7115585340e35/768/432/Image/Png",
+    "https://tr.rbxcdn.com/9844e6883685d0e9ac8f69739f89cecc/768/432/Image/Png",
+    "https://tr.rbxcdn.com/997960976f37f8d23a631c591620cd4a/768/432/Image/Png",
+    "https://tr.rbxcdn.com/c03068cc7a411ab374df6bd0bc69671e/768/432/Image/Png",
+    "https://tr.rbxcdn.com/41efc88d9796fa4b480e985c2245a836/768/432/Image/Png",
+    "https://tr.rbxcdn.com/9966c1b993205996f1453a9e66a7a5f3/768/432/Image/Png",
+    "https://tr.rbxcdn.com/b17e86f05e9c9e8123c8f1e5f779e4ee/768/432/Image/Png",
+    "https://tr.rbxcdn.com/e68faf5a3a2080f27467306f4486ff0f/768/432/Image/Png",
+    "https://t2.rbxcdn.com/45b31d4505d514928adfca9a7271d55e",
+    "https://t7.rbxcdn.com/5c66ba63087a3dd4cfa7b5c4717f6065",
+    "https://t1.rbxcdn.com/162138bbcfc4f93e3f26c790c6813acc",
+    "https://tr.rbxcdn.com/5d3294f63bf1f9ac268799cc4d1f56da/768/432/Image/Png",
+    "https://tr.rbxcdn.com/b83523c44c362851ca976aeb47711b04/768/432/Image/Png",
+    "https://tr.rbxcdn.com/71ee13ad60ecb7cecda73e695ec58a7a/768/432/Image/Png",
+]
+
+gameIdArr = [
+    5841467683,
+    5361853069,
+    6101349068,
+    5014397267,
+    6565314611,
+    8771989818,
+    10141792191,
+    5847686787,
+    7257291581,
+    1427493600,
+    1427580544,
+    5257899796,
+    4652767371,
+    2007110262,
+    7775216059,
+    8249245310,
+    11401909704,
+    11412621623,
+    9166246939,
+    11117968023,
+    8152027924,
+    9726482460,
+    8046351934,
+    8254413158
+]
+
+locArr = [
+    "Glacian Factory",
+    "Aurora's Dam",
+    "Blizzard Outfall",
+    "Reversal Compound",
+    "Unity Outfall",
+    "Reversal Compound 2",
+    "Graveyard",
+    "Tafes Pass",
+    "Collective",
+    "Indigo 2",
+    "Cerulean 2",
+    "Marrs Relay",
+    "Docks",
+    "Port Maersk",
+    "Armageddon Shipyard",
+    "Vulturist Tower",
+    "Pride of Altaris",
+    "Starfall Station",
+    "Malora District",
+    "Crown of Polaris",
+    "Arvore 2",
+    "Installation Anchorage",
+    "Dawn Under Heaven",
+    "Blacksite Ares"
+]
+
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -51,7 +159,7 @@ class App(customtkinter.CTk):
         self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.large_test_image)
         self.home_frame_large_image_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
-        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="MANUAL RAID CHECK", corner_radius=5, font=('Calibri', 12))
+        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="MANUAL RAID CHECK", corner_radius=5, font=('Calibri', 12), command=self.initial_test)
         self.home_frame_button_1.grid(row=1, column=0, padx=10, pady=10, sticky="E")
         self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
         self.home_frame_button_2.grid(row=1, column=1, padx=90, pady=10, sticky="W")
@@ -94,6 +202,8 @@ class App(customtkinter.CTk):
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
+    async def initial_test(self):
+        
 
 if __name__ == "__main__":
     app = App()
