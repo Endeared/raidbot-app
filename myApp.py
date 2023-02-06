@@ -47,12 +47,12 @@ class App(customtkinter.CTk):
         self.home_frame.grid_columnconfigure(0, weight=1)
 
         self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.large_test_image)
-        self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
+        self.home_frame_large_image_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
 
-        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="Manual raid check")
-        self.home_frame_button_1.grid(row=1, column=0, padx=20, pady=10)
-        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Enable auto check")
-        self.home_frame_button_2.grid(row=1, column=1, padx=20, pady=10)
+        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="Manual raid check", compound="right")
+        self.home_frame_button_1.grid(row=1, column=0, padx=10, pady=10)
+        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Enable auto check", compound="left")
+        self.home_frame_button_2.grid(row=1, column=1, padx=72, pady=10)
         self.home_frame_button_3 = customtkinter.CTkButton(self.home_frame, text="CTkButton", compound="top")
         self.home_frame_button_3.grid(row=3, column=0, padx=20, pady=10)
         self.home_frame_button_4 = customtkinter.CTkButton(self.home_frame, text="CTkButton", compound="bottom")
