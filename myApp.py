@@ -230,6 +230,7 @@ class App(customtkinter.CTk):
 
     def initial_test(self):
 
+        self.home_frame.children.clear()
         newItems = []
         i = 0
 
@@ -257,7 +258,6 @@ class App(customtkinter.CTk):
                 i += 1
                 print('test1')
                 try:
-                    self.home_frame.children.clear()
                     self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{loc}: {playerCount}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
                     self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
                     # self.new_label.configure(text=f'{loc}: {playerCount}')
