@@ -19,8 +19,8 @@ class App(customtkinter.CTk):
         self.logo_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "ClanEyeT.png")), size=(26, 26))
         self.large_test_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "large_test_image.png")), size=(500, 150))
         self.image_icon_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "image_icon_light.png")), size=(20, 20))
-        self.home_image = customtkinter.CTkImage(dark_image=Image.open(os.path.join(image_path, "RaidEye2.png")), size=(20, 20))
-        self.chat_image = customtkinter.CTkImage(dark_image=Image.open(os.path.join(image_path, "Praceye2.png")), size=(20, 20))
+        self.home_image = customtkinter.CTkImage(dark_image=Image.open(os.path.join(image_path, "RaidEyeT.png")), size=(20, 20))
+        self.chat_image = customtkinter.CTkImage(dark_image=Image.open(os.path.join(image_path, "PracEyeT.png")), size=(20, 20))
         self.add_user_image = customtkinter.CTkImage(dark_image=Image.open(os.path.join(image_path, "add_user_light.png")), size=(20, 20))
 
         # create navigation frame
@@ -33,12 +33,12 @@ class App(customtkinter.CTk):
         self.navigation_frame_label.grid(row=0, column=0, padx=20, pady=20)
 
         self.home_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="RaidEye",
-                                                   text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                   fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                    image=self.home_image, anchor="w", command=self.home_button_event)
         self.home_button.grid(row=1, column=0, sticky="ew")
 
         self.frame_2_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="PracEye",
-                                                      text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                      fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.chat_image, anchor="w", command=self.frame_2_button_event)
         self.frame_2_button.grid(row=2, column=0, sticky="ew")
 
