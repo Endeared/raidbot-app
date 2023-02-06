@@ -233,22 +233,24 @@ class App(customtkinter.CTk):
 
         self.home_frame.children.clear()
         newItems = []
+        iterator = []
         i = 0
+        headers = { "accept": "application/json", 'User-agent': 'ClanEye 1.0' }
 
         for i in range(0, len(gameIdArr)):
             newUrlArr.append(f"https://games.roblox.com/v1/games/{gameIdArr[i]}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}")
 
-        with ThreadPoolExecutor(max_workers=5) as pool:
-            iterator = pool.map(requests.get, newUrlArr)
-            
+        # with ThreadPoolExecutor(max_workers=1) as pool:
+        #     iterator = pool.map(requests.get, newUrlArr)
+        #     time.sleep(1)
+        for checkUrl in newUrlArr:
+            data = requests.get(checkUrl, headers=headers)
+            newItems.append(data.json())
 
-        for item in iterator:
-            newItems.append(item.json())
-
-        with ThreadPoolExecutor(max_workers=5) as pool2:
+        with ThreadPoolExecutor(max_workers=100) as pool2:
             iterator2 = pool2.map(json.dumps, newItems)
 
-        with ThreadPoolExecutor(max_workers=5) as pool3:
+        with ThreadPoolExecutor(max_workers=100) as pool3:
             iterator3 = pool3.map(json.loads, iterator2)
 
         i = 0
@@ -256,7 +258,6 @@ class App(customtkinter.CTk):
         for response in iterator3:
             print(response)
             loc = locArr[i]
-            print(loc)
             try:
                 playerCount = response['data'][0]['playing']
                 print(f"{locArr[i]}: {playerCount}")
