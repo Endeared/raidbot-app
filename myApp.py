@@ -234,6 +234,7 @@ class App(customtkinter.CTk):
     async def loop_check(self):
         while True:
             gridRow = 2
+            self.home_frame.children.clear()
             for i in range(0, len(gameIdArr)):
 
                 placeId = gameIdArr[i]
@@ -246,20 +247,22 @@ class App(customtkinter.CTk):
                 response = requests.get(gameServerList, headers=headers)
                 data = json.dumps(response.json())
                 check = json.loads(data)
+                print(check['data'][0]['playing'])
 
                 try:
                     playerCount = check['data'][0]['playing']
-                    if playerCount > 1:
-                        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{loc}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-                        self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
-                        gridRow += 1
+                    print(locArr[i] + " " + playerCount)
+                    self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                    self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+                    gridRow += 1
+                    asyncio.sleep(5)
                 except Exception:
-                    traceback.print_exc()
-
-                await asyncio.sleep(5)
+                    print(locArr[i] + " 0")
+                    asyncio.sleep(5)
+                    continue
 
     def start_in_bg(self):
-        asyncio.run(threading.Thread(target=self.loop_check).start())
+        asyncio.run(self.loop_check())
 
 
 
