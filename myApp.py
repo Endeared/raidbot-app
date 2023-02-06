@@ -1,9 +1,13 @@
 import customtkinter
 import tkinter
 import os
+import random
+import requests
+import json
 from PIL import Image
 
 urlArray = [
+    "https://www.roblox.com/games/155615604/Prison-Life-Cars-fixed",
     "https://www.roblox.com/games/5841467683/Glacian-Factory-RAID",
     "https://www.roblox.com/games/5361853069/Auroras-Dam-RAID",
     "https://www.roblox.com/games/6101349068/Blizzard-Outfall-RAID",
@@ -58,6 +62,7 @@ imgArr = [
 ]
 
 gameIdArr = [
+    155615604,
     5841467683,
     5361853069,
     6101349068,
@@ -85,6 +90,7 @@ gameIdArr = [
 ]
 
 locArr = [
+    "Prison Life",
     "Glacian Factory",
     "Aurora's Dam",
     "Blizzard Outfall",
@@ -111,6 +117,10 @@ locArr = [
     "Blacksite Ares"
 ]
 
+serverType = 0
+sortOrder = 2
+excludeFullGames = False
+limit = 10
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -202,8 +212,17 @@ class App(customtkinter.CTk):
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
-    async def initial_test(self):
+    def initial_test(self):
+        placeId = random.choice(gameIdArr)
+        gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
+
+        headers = { "accept": "application/json" }
+
+        response = requests.get(gameServerList, headers=headers)
+        data = json.dumps(response.json())
+        check = json.loads(data)
         
+        print(check)
 
 if __name__ == "__main__":
     app = App()
