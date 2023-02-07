@@ -9,8 +9,27 @@ import asyncio
 import threading
 import time
 import traceback
+import pyrebase
 from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
+
+
+config = {
+  "apiKey": "AIzaSyBqT2XnKRXee2wIQBVeU7SV46WML9uHg08",
+  "authDomain": "claneye.firebaseapp.com",
+  "databaseURL": "https://claneye-default-rtdb.firebaseio.com/",
+  "storageBucket": "claneye.appspot.com"
+}
+
+firebase = pyrebase.initialize_app(config)
+db = firebase.database()
+
+data = {"name ][ link"}
+data2 = {"name2 ][ link2"}
+data3 = {"name3 ][ link3"}
+db.child("users").child("first").set(data)
+db.child("users").child("second").set(data2)
+db.child("users").child("third").set(data3)
 
 urlArray = [
     "https://www.roblox.com/games/155615604/Prison-Life-Cars-fixed",
