@@ -293,6 +293,7 @@ class App(customtkinter.CTk):
                 time.sleep(1)
                 continue
         while searching == True:
+            gridRow = 3
             for i in range(0, len(gameIdArr)):
                 if searching == False:
                     for label in toRemove: 
@@ -301,6 +302,36 @@ class App(customtkinter.CTk):
                     break
 
                 placeId = gameIdArr[i]
+                gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
+
+                headers = {
+                    "accept": "application/json"
+                }
+
+                response = requests.get(gameServerList, headers=headers)
+                data = json.dumps(response.json())
+                check = json.loads(data)
+
+                try:
+                    raidSearchPlayer.append(check['data'][0]['playing'])
+                    raidSearchLoc.append(locArr[i])
+                    i += 1
+                except Exception:
+                    raidSearchPlayer.append(0)
+                    raidSearchLoc.append(locArr[i])
+                    i += 1
+
+                for label in toRemove: 
+                    label.destroy()
+                toRemove.clear()
+
+                for checkVal in range(0, len(raidSearchLoc)):
+                    self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{raidSearchLoc[checkVal]}: {raidSearchPlayer[checkVal]} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                    self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+                    toRemove.append(self.new_label)
+                    gridRow += 1
+            time.sleep(5)
+
 
     
     def end_loop(self):
