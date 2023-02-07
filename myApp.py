@@ -33,10 +33,19 @@ db.child("third").set(data3)
 
 data3 = data2
 data2 = data
-data = "newName ][ newLink"
+data = "haypro ][ outflash RCL"
 db.child("first").set(data)
 db.child("second").set(data2)
 db.child("third").set(data3)
+
+callData = db.child("first").get()
+callDataVal = callData.val()
+
+callData2 = db.child('second').get()
+callData2Val = callData2.val()
+
+callData3 = db.child('third').get()
+callData3Val = callData3.val()
 
 urlArray = [
     "https://www.roblox.com/games/155615604/Prison-Life-Cars-fixed",
