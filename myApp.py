@@ -38,15 +38,6 @@ db.child("first").set(data)
 db.child("second").set(data2)
 db.child("third").set(data3)
 
-callData = db.child("first").get()
-callDataVal = callData.val()
-
-callData2 = db.child('second').get()
-callData2Val = callData2.val()
-
-callData3 = db.child('third').get()
-callData3Val = callData3.val()
-
 urlArray = [
     "https://www.roblox.com/games/155615604/Prison-Life-Cars-fixed",
     "https://www.roblox.com/games/5841467683/Glacian-Factory-RAID",
@@ -160,6 +151,7 @@ locArr = [
 
 newUrlArr = []
 toRemove = []
+toRemoveSpar = []
 
 raidSearchLoc = []
 raidSearchPlayer = []
@@ -282,6 +274,8 @@ class App(customtkinter.CTk):
             label.destroy()
         toRemove.clear()
         print("success!")
+
+    def destroy_labels_spar(self)
 
     def loop_check(self):
         global searching
@@ -407,49 +401,27 @@ class App(customtkinter.CTk):
         sparThread.start()
     
     def loop_check_spar(self):
-        global searchingSpar
-        if searchingSpar == True:
-            return
-        searchingSpar = True
-        self.search_label_spar.configure(text="Currently searching for spars...")
-        while searching == True:
-            for label in toRemove: 
-                label.destroy()
-            toRemove.clear()
-            for i in range(0, len(gameIdArr)):
+        while True:
+            callData = db.child("first").get()
+            callDataVal = callData.val()
+            callData2 = db.child('second').get()
+            callData2Val = callData2.val()
+            callData3 = db.child('third').get()
+            callData3Val = callData3.val()
 
-                if searching == False:
-                    for label in toRemove: 
-                        label.destroy()
-                    toRemove.clear()
-                    break
 
-                print(searching)
-                placeId = gameIdArr[i]
-                gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
+            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callDataVal}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+            self.new_label.grid(row=3, column=0, columnspan=3, padx=10, pady=0)
+            toRemoveSpar.append(self.new_label)
 
-                headers = {
-                    "accept": "application/json"
-                }
+            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callDataVal}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+            self.new_label.grid(row=3, column=0, columnspan=3, padx=10, pady=0)
+            toRemoveSpar.append(self.new_label)
 
-                response = requests.get(gameServerList, headers=headers)
-                data = json.dumps(response.json())
-                check = json.loads(data)
+            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callDataVal}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+            self.new_label.grid(row=3, column=0, columnspan=3, padx=10, pady=0)
+            toRemoveSpar.append(self.new_label)
 
-                try:
-                    playerCount = check['data'][0]['playing']
-                    print(playerCount)
-                    print(check['data'][0]['playing'])
-                    print(f'{locArr[i]}: {playerCount}')
-                    self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-                    self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
-                    toRemove.append(self.new_label)
-                    gridRow += 1
-                    time.sleep(1)
-                except Exception:
-                    print(locArr[i] + " 0")
-                    time.sleep(1)
-                    continue
 
     def end_loop_spar(self):
         global searchingSpar
