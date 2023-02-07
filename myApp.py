@@ -160,8 +160,8 @@ class App(customtkinter.CTk):
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
         self.navigation_frame.grid_rowconfigure(4, weight=1)
 
-        self.navigation_frame_label = customtkinter.CTkLabel(self.navigation_frame, text="ClanEye", image=self.logo_image,
-                                                            compound="left", anchor="center", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.navigation_frame_label = customtkinter.CTkLabel(self.navigation_frame, text="  ClanEye", image=self.logo_image,
+                                                            compound="left", anchor="center", font=customtkinter.CTkFont(size=16, weight="bold"))
         self.navigation_frame_label.grid(row=0, column=0, padx=0, pady=20)
 
         self.home_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="RaidEye",
