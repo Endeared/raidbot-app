@@ -242,12 +242,6 @@ class App(customtkinter.CTk):
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
-    def create_label(self, location, numOfPlayers):
-        print('test!')
-        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{location}: {numOfPlayers}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-        self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
-        print('success!')
-
     def destroy_labels(self):
         for label in toRemove:
             label.destroy()
