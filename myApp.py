@@ -259,18 +259,14 @@ class App(customtkinter.CTk):
         global toRemove
         if searching == True:
             return
-        for label in toRemove: 
-            label.destroy()
-        toRemove.clear()
+        self.destroy_labels()
         searching = True
         self.search_label.configure(text="Currently searching for raids...")
         gridRow = 3
         for i in range(0, len(gameIdArr)):
 
             if searching == False:
-                for label in toRemove: 
-                    label.destroy()
-                toRemove.clear()
+                self.destroy_labels()
                 break
 
             placeId = gameIdArr[i]
@@ -301,18 +297,17 @@ class App(customtkinter.CTk):
 
         while searching == True:
 
+            raidSearchPlayer.clear()
+            raidSearchLoc.clear()
+
             if searching == False:
-                for label in toRemove: 
-                    label.destroy()
-                toRemove.clear()
+                self.destroy_labels()
                 break
 
             gridRow = 3
             for i in range(0, len(gameIdArr)):
                 if searching == False:
-                    for label in toRemove: 
-                        label.destroy()
-                    toRemove.clear()
+                    self.destroy_labels()
                     break
 
                 placeId = gameIdArr[i]
@@ -345,10 +340,9 @@ class App(customtkinter.CTk):
                         self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
                         toRemove.append(self.new_label)
                         gridRow += 1
-            time.sleep(5)
-        for label in toRemove: 
-            label.destroy()
-        toRemove.clear()
+            time.sleep(1)
+
+        self.destroy_labels()
 
 
     
