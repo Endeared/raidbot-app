@@ -337,12 +337,12 @@ class App(customtkinter.CTk):
                 if searching == False:
                     self.destroy_labels()
                     break
-                
+
                 self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{raidSearchLoc[checkVal]}: {raidSearchPlayer[checkVal]} player(s)', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
                 self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
                 toRemove.append(self.new_label)
                 gridRow += 1
-            time.sleep(1)
+            time.sleep(10)
 
         self.destroy_labels()
 
