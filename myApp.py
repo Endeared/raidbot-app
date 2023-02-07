@@ -248,8 +248,15 @@ class App(customtkinter.CTk):
         self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
         print('success!')
 
+    def destroy_labels(self):
+        for label in toRemove:
+            label.destroy()
+        toRemove.clear()
+        print("success!")
+
     def loop_check(self):
         global searching
+        global toRemove
         if searching == True:
             return
         for label in toRemove: 
@@ -276,7 +283,7 @@ class App(customtkinter.CTk):
             response = requests.get(gameServerList, headers=headers)
             data = json.dumps(response.json())
             check = json.loads(data)
-            
+
             try:
                 playerCount = check['data'][0]['playing']
                 print(f'{locArr[i]}: {playerCount}')
@@ -289,7 +296,17 @@ class App(customtkinter.CTk):
                 print(locArr[i] + ": 0")
                 time.sleep(0.2)
                 continue
+
+        self.destroy_labels()
+
         while searching == True:
+
+            if searching == False:
+                for label in toRemove: 
+                    label.destroy()
+                toRemove.clear()
+                break
+
             gridRow = 3
             for i in range(0, len(gameIdArr)):
                 if searching == False:
@@ -320,11 +337,7 @@ class App(customtkinter.CTk):
                     i += 1
                     time.sleep(0.2)
 
-            print(len(toRemove))
-            for label in toRemove:
-                label.destroy()
-            toRemove.clear()
-            print(len(toRemove))
+            self.destroy_labels()
 
             for checkVal in range(0, len(raidSearchPlayer)):
                     if raidSearchPlayer[checkVal] > 0:
