@@ -407,10 +407,12 @@ class App(customtkinter.CTk):
     
     def loop_check_spar(self):
         global searchingSpar
-        
+
         if searchingSpar == True:
             return
-
+        
+        searchingSpar = True
+        self.search_label.configure(text="Currently searching for spars...")
         while searchingSpar == True:
             callData = db.child("first").get()
             callDataVal = callData.val()
