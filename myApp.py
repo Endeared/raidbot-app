@@ -266,7 +266,6 @@ class App(customtkinter.CTk):
                 toRemove.clear()
                 break
 
-            print(searching)
             placeId = gameIdArr[i]
             gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
 
@@ -280,8 +279,6 @@ class App(customtkinter.CTk):
 
             try:
                 playerCount = check['data'][0]['playing']
-                print(playerCount)
-                print(check['data'][0]['playing'])
                 print(f'{locArr[i]}: {playerCount}')
                 self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
                 self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
@@ -323,17 +320,20 @@ class App(customtkinter.CTk):
                     i += 1
                     time.sleep(0.3)
 
-                for label in toRemove: 
-                    label.destroy()
-                toRemove.clear()
+            for label in toRemove:
+                label.destroy()
+            toRemove.clear()
 
-                for checkVal in range(0, len(raidSearchPlayer)):
+            for checkVal in range(0, len(raidSearchPlayer)):
                     if raidSearchPlayer[checkVal] > 0:
                         self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{raidSearchLoc[checkVal]}: {raidSearchPlayer[checkVal]} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
                         self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
                         toRemove.append(self.new_label)
                         gridRow += 1
             time.sleep(5)
+        for label in toRemove: 
+            label.destroy()
+        toRemove.clear()
 
 
     
