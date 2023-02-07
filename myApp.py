@@ -410,9 +410,23 @@ class App(customtkinter.CTk):
 
         if searchingSpar == True:
             return
+
+        callData = db.child("first").get()
+        callDataVal = callData.val()
+        callData2 = db.child('second').get()
+        callData2Val = callData2.val()
+        callData3 = db.child('third').get()
+        callData3Val = callData3.val()
+
+        self.first_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callDataVal}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.first_label.grid(row=3, column=0, columnspan=3, padx=10, pady=0)
+        self.second_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callData2Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.second_label.grid(row=4, column=0, columnspan=3, padx=10, pady=0)
+        self.third_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callData3Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.third_label.grid(row=5, column=0, columnspan=3, padx=10, pady=0)
         
         searchingSpar = True
-        self.search_label.configure(text="Currently searching for spars...")
+        self.search_label_spar.configure(text="Currently searching for spars...")
         while searchingSpar == True:
             callData = db.child("first").get()
             callDataVal = callData.val()
@@ -421,18 +435,10 @@ class App(customtkinter.CTk):
             callData3 = db.child('third').get()
             callData3Val = callData3.val()
 
+            self.first_label.configure(text=callDataVal)
+            self.second_label.configure(text=callData2Val)
+            self.third_label.configure(text=callData3Val)
 
-            self.new_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callDataVal}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-            self.new_label.grid(row=3, column=0, columnspan=3, padx=10, pady=0)
-            toRemoveSpar.append(self.new_label)
-
-            self.new_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callData2Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-            self.new_label.grid(row=4, column=0, columnspan=3, padx=10, pady=0)
-            toRemoveSpar.append(self.new_label)
-
-            self.new_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callData3Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-            self.new_label.grid(row=5, column=0, columnspan=3, padx=10, pady=0)
-            toRemoveSpar.append(self.new_label)
 
             time.sleep(10)
 
@@ -443,7 +449,7 @@ class App(customtkinter.CTk):
         for label in toRemoveSpar:
             label.destroy()
         toRemoveSpar.clear()
-        self.search_label.configure(text="Waiting for search to start...")
+        self.search_label_spar.configure(text="Waiting for search to start...")
 
     def start_in_bg_spar(self):
         checkThreadSpar = threading.Thread(target=self.loop_check_spar)
