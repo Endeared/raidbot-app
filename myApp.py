@@ -126,6 +126,9 @@ locArr = [
 newUrlArr = []
 toRemove = []
 
+raidSearchLoc = []
+raidSearchPlayer = []
+
 serverType = 0
 sortOrder = 2
 excludeFullGames = False
@@ -254,45 +257,51 @@ class App(customtkinter.CTk):
         toRemove.clear()
         searching = True
         self.search_label.configure(text="Currently searching for raids...")
-        while searching == True:
-            gridRow = 3
-            for label in toRemove: 
-                label.destroy()
-            toRemove.clear()
-            for i in range(0, len(gameIdArr)):
+        gridRow = 3
+        for i in range(0, len(gameIdArr)):
 
+            if searching == False:
+                for label in toRemove: 
+                    label.destroy()
+                toRemove.clear()
+                break
+
+            print(searching)
+            placeId = gameIdArr[i]
+            gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
+
+            headers = {
+                "accept": "application/json"
+            }
+
+            response = requests.get(gameServerList, headers=headers)
+            data = json.dumps(response.json())
+            check = json.loads(data)
+
+            try:
+                playerCount = check['data'][0]['playing']
+                print(playerCount)
+                print(check['data'][0]['playing'])
+                print(f'{locArr[i]}: {playerCount}')
+                self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+                toRemove.append(self.new_label)
+                gridRow += 1
+                time.sleep(1)
+            except Exception:
+                print(locArr[i] + " 0")
+                time.sleep(1)
+                continue
+        while searching == True:
+            for i in range(0, len(gameIdArr)):
                 if searching == False:
                     for label in toRemove: 
                         label.destroy()
                     toRemove.clear()
                     break
 
-                print(searching)
                 placeId = gameIdArr[i]
-                gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
 
-                headers = {
-                    "accept": "application/json"
-                }
-
-                response = requests.get(gameServerList, headers=headers)
-                data = json.dumps(response.json())
-                check = json.loads(data)
-
-                try:
-                    playerCount = check['data'][0]['playing']
-                    print(playerCount)
-                    print(check['data'][0]['playing'])
-                    print(f'{locArr[i]}: {playerCount}')
-                    self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-                    self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
-                    toRemove.append(self.new_label)
-                    gridRow += 1
-                    time.sleep(1)
-                except Exception:
-                    print(locArr[i] + " 0")
-                    time.sleep(1)
-                    continue
     
     def end_loop(self):
         global searching
