@@ -24,12 +24,19 @@ config = {
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
-data = {"name ][ link"}
-data2 = {"name2 ][ link2"}
-data3 = {"name3 ][ link3"}
-db.child("users").child("first").set(data)
-db.child("users").child("second").set(data2)
-db.child("users").child("third").set(data3)
+data = "name ][ link"
+data2 = "name2 ][ link2"
+data3 = "name3 ][ link3"
+db.child("first").set(data)
+db.child("second").set(data2)
+db.child("third").set(data3)
+
+data3 = data2
+data2 = data
+data = "newName ][ newLink"
+db.child("first").set(data)
+db.child("second").set(data2)
+db.child("third").set(data3)
 
 urlArray = [
     "https://www.roblox.com/games/155615604/Prison-Life-Cars-fixed",
