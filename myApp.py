@@ -261,7 +261,7 @@ class App(customtkinter.CTk):
             return
         self.destroy_labels()
         searching = True
-        self.search_label.configure(text="Currently searching for raids...")
+        self.search_label.configure(text="Initializing search...")
         gridRow = 3
         for i in range(0, len(gameIdArr)):
 
@@ -283,15 +283,28 @@ class App(customtkinter.CTk):
             try:
                 playerCount = check['data'][0]['playing']
                 print(f'{locArr[i]}: {playerCount}')
-                self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} player(s)', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-                self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
-                toRemove.append(self.new_label)
-                gridRow += 1
+                if playerCount > 0:
+                    raidSearchPlayer.append(check['data'][0]['playing'])
+                    raidSearchLoc.append(locArr[i])
+                i += 1
                 time.sleep(0.2)
             except Exception:
-                print(locArr[i] + ": 0")
+                print(f'{locArr[i]}: 0')
+                i += 1
                 time.sleep(0.2)
-                continue
+
+        for checkVal in range(0, len(raidSearchPlayer)):
+
+            if searching == False:
+                self.destroy_labels()
+                break
+
+            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{raidSearchLoc[checkVal]}: {raidSearchPlayer[checkVal]} player(s)', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+            self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+            toRemove.append(self.new_label)
+            gridRow += 1
+
+        self.search_label.configure(text="Currently searching for raids...")
 
         while searching == True:
 
