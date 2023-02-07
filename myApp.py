@@ -286,7 +286,7 @@ class App(customtkinter.CTk):
                 gridRow += 1
                 time.sleep(1)
             except Exception:
-                print(locArr[i] + " 0")
+                print(locArr[i] + ": 0")
                 time.sleep(1)
                 continue
         while searching == True:
@@ -320,6 +320,7 @@ class App(customtkinter.CTk):
                     i += 1
                     time.sleep(0.3)
 
+            print(len(toRemove))
             for label in toRemove:
                 label.destroy()
             toRemove.clear()
