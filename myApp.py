@@ -161,18 +161,18 @@ class App(customtkinter.CTk):
         self.navigation_frame.grid_rowconfigure(4, weight=1)
 
         self.navigation_frame_label = customtkinter.CTkLabel(self.navigation_frame, text="ClanEye", image=self.logo_image,
-                                                             compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-        self.navigation_frame_label.grid(row=0, column=0, padx=20, pady=20)
+                                                            compound="left", anchor="center", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.navigation_frame_label.grid(row=0, column=0, padx=0, pady=20)
 
         self.home_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="RaidEye",
                                                    fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                   image=self.home_image, anchor="w", command=self.home_button_event)
-        self.home_button.grid(row=1, column=0, sticky="ew")
+                                                   image=self.home_image, anchor="center", command=self.home_button_event)
+        self.home_button.grid(row=1, column=0)
 
         self.frame_2_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="PracEye",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                      image=self.chat_image, anchor="w", command=self.frame_2_button_event)
-        self.frame_2_button.grid(row=2, column=0, sticky="ew")
+                                                      image=self.chat_image, anchor="center", command=self.frame_2_button_event)
+        self.frame_2_button.grid(row=2, column=0)
 
 
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -202,9 +202,9 @@ class App(customtkinter.CTk):
         self.prac_frame_large_image_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
         self.prac_frame_button_1 = customtkinter.CTkButton(self.prac_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
-        self.prac_frame_button_1.grid(row=1, column=0, padx=10, pady=10, sticky="E")
+        self.prac_frame_button_1.grid(row=1, column=1, padx=90, pady=10, sticky="W")
         self.prac_frame_button_2 = customtkinter.CTkButton(self.prac_frame, text="DISABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
-        self.prac_frame_button_2.grid(row=1, column=1, padx=90, pady=10, sticky="W")
+        self.prac_frame_button_2.grid(row=1, column=0, padx=10, pady=10, sticky="E")
 
         self.search_label_spar = customtkinter.CTkLabel(self.prac_frame, text=f'Waiting for search to start...', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.search_label_spar.grid(row=2, column=0, columnspan=3, padx=10, pady=0)
