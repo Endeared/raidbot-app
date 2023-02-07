@@ -414,13 +414,15 @@ class App(customtkinter.CTk):
             self.new_label.grid(row=3, column=0, columnspan=3, padx=10, pady=0)
             toRemoveSpar.append(self.new_label)
 
-            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callDataVal}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-            self.new_label.grid(row=3, column=0, columnspan=3, padx=10, pady=0)
+            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callData2Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+            self.new_label.grid(row=4, column=0, columnspan=3, padx=10, pady=0)
             toRemoveSpar.append(self.new_label)
 
-            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callDataVal}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-            self.new_label.grid(row=3, column=0, columnspan=3, padx=10, pady=0)
+            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callData3Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+            self.new_label.grid(row=5, column=0, columnspan=3, padx=10, pady=0)
             toRemoveSpar.append(self.new_label)
+
+            time.sleep(10)
 
 
     def end_loop_spar(self):
