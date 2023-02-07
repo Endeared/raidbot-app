@@ -124,6 +124,7 @@ locArr = [
 ]
 
 newUrlArr = []
+toRemove = []
 
 serverType = 0
 sortOrder = 2
@@ -137,7 +138,7 @@ class App(customtkinter.CTk):
         super().__init__()
 
         self.protocol("WM_DELETE_WINDOW", self.quit_me)
-        self.title("ClanEye Client")
+        self.title("ClanEye Client - by haypro")
         self.iconbitmap('test_images\ClanEyeT.ico')
         self.geometry("700x450")
 
@@ -190,6 +191,9 @@ class App(customtkinter.CTk):
         # self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
         # self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
 
+        self.search_label = customtkinter.CTkLabel(self.home_frame, text=f'Waiting for search to start...', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.search_label.grid(row=2, column=0, columnspan=3, padx=10, pady=0)
+
 
         self.prac_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.prac_frame.grid_columnconfigure(0, weight=1)
@@ -241,17 +245,24 @@ class App(customtkinter.CTk):
 
     def loop_check(self):
         global searching
-        self.home_frame.children.clear()
-        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'Currently searching for raids...', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-        self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=0)
+        if searching == True:
+            return
+        for label in toRemove: 
+            label.destroy()
+        toRemove.clear()
         searching = True
+        self.search_label.configure(text="Currently searching for raids...")
         while searching == True:
             gridRow = 3
-            self.home_frame.children.clear()
+            for label in toRemove: 
+                label.destroy()
+            toRemove.clear()
             for i in range(0, len(gameIdArr)):
 
                 if searching == False:
-                    self.home_frame.children.clear()
+                    for label in toRemove: 
+                        label.destroy()
+                    toRemove.clear()
                     break
 
                 print(searching)
@@ -273,26 +284,26 @@ class App(customtkinter.CTk):
                     print(f'{locArr[i]}: {playerCount}')
                     self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
                     self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+                    toRemove.append(self.new_label)
                     gridRow += 1
                     time.sleep(1)
                 except Exception:
                     print(locArr[i] + " 0")
                     time.sleep(1)
                     continue
-        self.home_frame.children.clear()
     
     def end_loop(self):
         global searching
         print(searching)
         searching = False
-        self.home_frame.children.clear()
-        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'Waiting for search.', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-        self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=0)
+        for label in toRemove: 
+            label.destroy()
+        toRemove.clear()
+        self.search_label.configure(text="Waiting for search to start...")
 
     def start_in_bg(self):
         checkThread = threading.Thread(target=self.loop_check)
         checkThread.start()
-
 
 
     def initial_test(self):
