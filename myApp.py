@@ -206,6 +206,9 @@ class App(customtkinter.CTk):
         self.prac_frame_button_2 = customtkinter.CTkButton(self.prac_frame, text="DISABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
         self.prac_frame_button_2.grid(row=1, column=1, padx=90, pady=10, sticky="W")
 
+        self.search_label_spar = customtkinter.CTkLabel(self.prac_frame, text=f'Waiting for search to start...', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.search_label_spar.grid(row=2, column=0, columnspan=3, padx=10, pady=0)
+
 
         self.select_frame_by_name("home")
 
@@ -241,7 +244,6 @@ class App(customtkinter.CTk):
         self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{location}: {numOfPlayers}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
         print('success!')
-
 
     def loop_check(self):
         global searching
@@ -294,7 +296,6 @@ class App(customtkinter.CTk):
     
     def end_loop(self):
         global searching
-        print(searching)
         searching = False
         for label in toRemove: 
             label.destroy()
@@ -304,6 +305,61 @@ class App(customtkinter.CTk):
     def start_in_bg(self):
         checkThread = threading.Thread(target=self.loop_check)
         checkThread.start()
+
+    
+    def loop_check_spar(self):
+        global searchingSpar
+        if searchingSpar == True:
+            return
+        searchingSpar = True
+        self.search_label_spar.configure(text="Currently searching for spars...")
+        while searching == True:
+            for label in toRemove: 
+                label.destroy()
+            toRemove.clear()
+            for i in range(0, len(gameIdArr)):
+
+                if searching == False:
+                    for label in toRemove: 
+                        label.destroy()
+                    toRemove.clear()
+                    break
+
+                print(searching)
+                placeId = gameIdArr[i]
+                gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
+
+                headers = {
+                    "accept": "application/json"
+                }
+
+                response = requests.get(gameServerList, headers=headers)
+                data = json.dumps(response.json())
+                check = json.loads(data)
+
+                try:
+                    playerCount = check['data'][0]['playing']
+                    print(playerCount)
+                    print(check['data'][0]['playing'])
+                    print(f'{locArr[i]}: {playerCount}')
+                    self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                    self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+                    toRemove.append(self.new_label)
+                    gridRow += 1
+                    time.sleep(1)
+                except Exception:
+                    print(locArr[i] + " 0")
+                    time.sleep(1)
+                    continue
+
+    def end_loop_spar(self):
+        global searchingSpar
+        searchingSpar = False
+        self.search_label.configure(text="Waiting for search to start...")
+
+    def start_in_bg_spar(self):
+        checkThreadSpar = threading.Thread(target=self.loop_check_spar)
+        checkThreadSpar.start()
 
 
     def initial_test(self):
