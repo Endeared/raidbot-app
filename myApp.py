@@ -283,7 +283,7 @@ class App(customtkinter.CTk):
             try:
                 playerCount = check['data'][0]['playing']
                 print(f'{locArr[i]}: {playerCount}')
-                self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} player(s)', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
                 self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
                 toRemove.append(self.new_label)
                 gridRow += 1
@@ -292,8 +292,6 @@ class App(customtkinter.CTk):
                 print(locArr[i] + ": 0")
                 time.sleep(0.2)
                 continue
-
-        self.destroy_labels()
 
         while searching == True:
 
@@ -322,24 +320,28 @@ class App(customtkinter.CTk):
                 check = json.loads(data)
 
                 try:
-                    raidSearchPlayer.append(check['data'][0]['playing'])
-                    raidSearchLoc.append(locArr[i])
+                    playerCount = check['data'][0]['playing']
+                    if playerCount > 0:
+                        raidSearchPlayer.append(check['data'][0]['playing'])
+                        raidSearchLoc.append(locArr[i])
                     i += 1
                     time.sleep(0.2)
                 except Exception:
-                    raidSearchPlayer.append(0)
-                    raidSearchLoc.append(locArr[i])
                     i += 1
                     time.sleep(0.2)
 
             self.destroy_labels()
 
             for checkVal in range(0, len(raidSearchPlayer)):
-                    if raidSearchPlayer[checkVal] > 0:
-                        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{raidSearchLoc[checkVal]}: {raidSearchPlayer[checkVal]} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-                        self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
-                        toRemove.append(self.new_label)
-                        gridRow += 1
+
+                if searching == False:
+                    self.destroy_labels()
+                    break
+                
+                self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{raidSearchLoc[checkVal]}: {raidSearchPlayer[checkVal]} player(s)', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+                toRemove.append(self.new_label)
+                gridRow += 1
             time.sleep(1)
 
         self.destroy_labels()
