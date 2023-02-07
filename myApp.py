@@ -316,20 +316,23 @@ class App(customtkinter.CTk):
                     raidSearchPlayer.append(check['data'][0]['playing'])
                     raidSearchLoc.append(locArr[i])
                     i += 1
+                    time.sleep(0.3)
                 except Exception:
                     raidSearchPlayer.append(0)
                     raidSearchLoc.append(locArr[i])
                     i += 1
+                    time.sleep(0.3)
 
                 for label in toRemove: 
                     label.destroy()
                 toRemove.clear()
 
-                for checkVal in range(0, len(raidSearchLoc)):
-                    self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{raidSearchLoc[checkVal]}: {raidSearchPlayer[checkVal]} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
-                    self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
-                    toRemove.append(self.new_label)
-                    gridRow += 1
+                for checkVal in range(0, len(raidSearchPlayer)):
+                    if raidSearchPlayer[checkVal] > 0:
+                        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{raidSearchLoc[checkVal]}: {raidSearchPlayer[checkVal]} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+                        self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
+                        toRemove.append(self.new_label)
+                        gridRow += 1
             time.sleep(5)
 
 
