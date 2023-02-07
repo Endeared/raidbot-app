@@ -233,7 +233,7 @@ class App(customtkinter.CTk):
 
         self.prac_frame_button_1 = customtkinter.CTkButton(self.prac_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12), command=self.start_in_bg_spar)
         self.prac_frame_button_1.grid(row=1, column=1, padx=90, pady=10, sticky="W")
-        self.prac_frame_button_2 = customtkinter.CTkButton(self.prac_frame, text="DISABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
+        self.prac_frame_button_2 = customtkinter.CTkButton(self.prac_frame, text="DISABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12), command=self.end_loop_spar)
         self.prac_frame_button_2.grid(row=1, column=0, padx=10, pady=10, sticky="E")
 
         self.search_label_spar = customtkinter.CTkLabel(self.prac_frame, text=f'Waiting for search to start...', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
@@ -405,7 +405,10 @@ class App(customtkinter.CTk):
         sparThread.start()
     
     def loop_check_spar(self):
-        while True:
+        if searchingSpar == True:
+            return
+            
+        while searchingSpar == True:
             callData = db.child("first").get()
             callDataVal = callData.val()
             callData2 = db.child('second').get()
@@ -414,15 +417,15 @@ class App(customtkinter.CTk):
             callData3Val = callData3.val()
 
 
-            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callDataVal}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+            self.new_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callDataVal}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
             self.new_label.grid(row=3, column=0, columnspan=3, padx=10, pady=0)
             toRemoveSpar.append(self.new_label)
 
-            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callData2Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+            self.new_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callData2Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
             self.new_label.grid(row=4, column=0, columnspan=3, padx=10, pady=0)
             toRemoveSpar.append(self.new_label)
 
-            self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{callData3Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+            self.new_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callData3Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
             self.new_label.grid(row=5, column=0, columnspan=3, padx=10, pady=0)
             toRemoveSpar.append(self.new_label)
 
@@ -432,6 +435,9 @@ class App(customtkinter.CTk):
     def end_loop_spar(self):
         global searchingSpar
         searchingSpar = False
+        for label in toRemoveSpar:
+            label.destroy()
+        toRemoveSpar.clear()
         self.search_label.configure(text="Waiting for search to start...")
 
     def start_in_bg_spar(self):
