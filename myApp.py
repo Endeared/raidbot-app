@@ -275,7 +275,11 @@ class App(customtkinter.CTk):
         toRemove.clear()
         print("success!")
 
-    def destroy_labels_spar(self)
+    def destroy_labels_spar(self):
+        for label in toRemoveSpar:
+            label.destroy()
+        toRemoveSpar.clear()
+        print("success spar!")
 
     def loop_check(self):
         global searching
