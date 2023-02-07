@@ -161,6 +161,7 @@ sortOrder = 2
 excludeFullGames = False
 limit = 10
 searching = False
+searchingSpar = False
 
 class App(customtkinter.CTk):
 
@@ -405,9 +406,11 @@ class App(customtkinter.CTk):
         sparThread.start()
     
     def loop_check_spar(self):
+        global searchingSpar
+        
         if searchingSpar == True:
             return
-            
+
         while searchingSpar == True:
             callData = db.child("first").get()
             callDataVal = callData.val()
