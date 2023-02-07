@@ -239,7 +239,7 @@ class App(customtkinter.CTk):
         self.prac_frame_large_image_label = customtkinter.CTkLabel(self.prac_frame, text="", image=self.banner2)
         self.prac_frame_large_image_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
-        self.prac_frame_button_1 = customtkinter.CTkButton(self.prac_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
+        self.prac_frame_button_1 = customtkinter.CTkButton(self.prac_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12), command=self.start_in_bg_spar)
         self.prac_frame_button_1.grid(row=1, column=1, padx=90, pady=10, sticky="W")
         self.prac_frame_button_2 = customtkinter.CTkButton(self.prac_frame, text="DISABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12))
         self.prac_frame_button_2.grid(row=1, column=0, padx=10, pady=10, sticky="E")
@@ -402,6 +402,9 @@ class App(customtkinter.CTk):
         checkThread = threading.Thread(target=self.loop_check)
         checkThread.start()
 
+    def start_in_bg_spar(self):
+        sparThread = threading.Thread(target=self.loop_check_spar)
+        sparThread.start()
     
     def loop_check_spar(self):
         global searchingSpar
