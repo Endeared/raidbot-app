@@ -276,7 +276,7 @@ class App(customtkinter.CTk):
             response = requests.get(gameServerList, headers=headers)
             data = json.dumps(response.json())
             check = json.loads(data)
-
+            
             try:
                 playerCount = check['data'][0]['playing']
                 print(f'{locArr[i]}: {playerCount}')
@@ -284,10 +284,10 @@ class App(customtkinter.CTk):
                 self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
                 toRemove.append(self.new_label)
                 gridRow += 1
-                time.sleep(1)
+                time.sleep(0.2)
             except Exception:
                 print(locArr[i] + ": 0")
-                time.sleep(1)
+                time.sleep(0.2)
                 continue
         while searching == True:
             gridRow = 3
@@ -313,17 +313,18 @@ class App(customtkinter.CTk):
                     raidSearchPlayer.append(check['data'][0]['playing'])
                     raidSearchLoc.append(locArr[i])
                     i += 1
-                    time.sleep(0.3)
+                    time.sleep(0.2)
                 except Exception:
                     raidSearchPlayer.append(0)
                     raidSearchLoc.append(locArr[i])
                     i += 1
-                    time.sleep(0.3)
+                    time.sleep(0.2)
 
             print(len(toRemove))
             for label in toRemove:
                 label.destroy()
             toRemove.clear()
+            print(len(toRemove))
 
             for checkVal in range(0, len(raidSearchPlayer)):
                     if raidSearchPlayer[checkVal] > 0:
