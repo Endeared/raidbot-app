@@ -134,7 +134,8 @@ class App(customtkinter.CTk):
 
     def __init__(self):
         super().__init__()
-        
+
+        self.protocol("WM_DELETE_WINDOW", self.quit_me)
         self.title("ClanEye Client")
         self.iconbitmap('test_images\ClanEyeT.ico')
         self.geometry("700x450")
@@ -201,6 +202,10 @@ class App(customtkinter.CTk):
 
         self.select_frame_by_name("home")
 
+    def quit_me(self):
+        print('quit')
+        self.quit()
+        self.destroy()
 
     def select_frame_by_name(self, name):
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
@@ -232,8 +237,11 @@ class App(customtkinter.CTk):
 
 
     def loop_check(self):
+        self.home_frame.children.clear()
+        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'Currently searching for raids...', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=0)
         while True:
-            gridRow = 2
+            gridRow = 3
             self.home_frame.children.clear()
             for i in range(0, len(gameIdArr)):
 
@@ -245,23 +253,26 @@ class App(customtkinter.CTk):
                 }
 
                 response = requests.get(gameServerList, headers=headers)
+                print(response)
                 data = json.dumps(response.json())
                 check = json.loads(data)
 
                 try:
                     playerCount = check['data'][0]['playing']
-                    print(locArr[i] + " " + playerCount)
+                    print(playerCount)
+                    print(check['data'][0]['playing'])
+                    print(f'{locArr[i]}: {playerCount}')
                     self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'{locArr[i]}: {playerCount} players', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
                     self.new_label.grid(row=gridRow, column=0, columnspan=3, padx=10, pady=0)
                     gridRow += 1
-                    asyncio.sleep(5)
+                    time.sleep(1)
                 except Exception:
                     print(locArr[i] + " 0")
-                    asyncio.sleep(5)
+                    time.sleep(1)
                     continue
 
     def start_in_bg(self):
-        checkThread = threading.Thread(target=self.loop_check(), args=[self])
+        checkThread = threading.Thread(target=self.loop_check)
         checkThread.start()
 
 
@@ -330,3 +341,5 @@ class App(customtkinter.CTk):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+
+    
