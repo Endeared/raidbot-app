@@ -129,6 +129,7 @@ serverType = 0
 sortOrder = 2
 excludeFullGames = False
 limit = 10
+searching = False
 
 class App(customtkinter.CTk):
 
@@ -179,10 +180,12 @@ class App(customtkinter.CTk):
         self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.large_test_image)
         self.home_frame_large_image_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
-        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="MANUAL RAID CHECK", corner_radius=5, font=('Calibri', 12), command=self.initial_test)
-        self.home_frame_button_1.grid(row=1, column=0, padx=10, pady=10, sticky="E")
+        # self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="MANUAL RAID CHECK", corner_radius=5, font=('Calibri', 12), command=self.initial_test)
+        # self.home_frame_button_1.grid(row=1, column=0, padx=10, pady=10, sticky="E")
         self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12), command=self.start_in_bg)
         self.home_frame_button_2.grid(row=1, column=1, padx=90, pady=10, sticky="W")
+        self.home_frame_button_3 = customtkinter.CTkButton(self.home_frame, text="DISABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12), command=self.end_loop)
+        self.home_frame_button_3.grid(row=1, column=0, padx=10, pady=10, sticky="E")
 
         # self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
         # self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
@@ -237,14 +240,21 @@ class App(customtkinter.CTk):
 
 
     def loop_check(self):
+        global searching
         self.home_frame.children.clear()
         self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'Currently searching for raids...', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=0)
-        while True:
+        searching = True
+        while searching == True:
             gridRow = 3
             self.home_frame.children.clear()
             for i in range(0, len(gameIdArr)):
 
+                if searching == False:
+                    self.home_frame.children.clear()
+                    break
+
+                print(searching)
                 placeId = gameIdArr[i]
                 gameServerList = f"https://games.roblox.com/v1/games/{placeId}/servers/{serverType}?sortOrder={sortOrder}&excludeFullGames={excludeFullGames}&limit={limit}"
 
@@ -253,7 +263,6 @@ class App(customtkinter.CTk):
                 }
 
                 response = requests.get(gameServerList, headers=headers)
-                print(response)
                 data = json.dumps(response.json())
                 check = json.loads(data)
 
@@ -270,6 +279,15 @@ class App(customtkinter.CTk):
                     print(locArr[i] + " 0")
                     time.sleep(1)
                     continue
+        self.home_frame.children.clear()
+    
+    def end_loop(self):
+        global searching
+        print(searching)
+        searching = False
+        self.home_frame.children.clear()
+        self.new_label = customtkinter.CTkLabel(self.home_frame, text=f'Waiting for search.', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.new_label.grid(row=2, column=0, columnspan=3, padx=10, pady=0)
 
     def start_in_bg(self):
         checkThread = threading.Thread(target=self.loop_check)
