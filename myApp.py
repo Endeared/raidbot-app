@@ -24,20 +24,6 @@ config = {
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
-data = "name ][ link"
-data2 = "name2 ][ link2"
-data3 = "name3 ][ link3"
-db.child("first").set(data)
-db.child("second").set(data2)
-db.child("third").set(data3)
-
-data3 = data2
-data2 = data
-data = "haypro ][ outflash RCL"
-db.child("first").set(data)
-db.child("second").set(data2)
-db.child("third").set(data3)
-
 urlArray = [
     "https://www.roblox.com/games/155615604/Prison-Life-Cars-fixed",
     "https://www.roblox.com/games/5841467683/Glacian-Factory-RAID",
@@ -234,7 +220,7 @@ class App(customtkinter.CTk):
 
         self.prac_frame_button_1 = customtkinter.CTkButton(self.prac_frame, text="ENABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12), command=self.start_in_bg_spar)
         self.prac_frame_button_1.grid(row=1, column=1, padx=90, pady=10, sticky="W")
-        self.prac_frame_button_2 = customtkinter.CTkButton(self.prac_frame, text="DISABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12), command=self.end_loop_spar)
+        self.prac_frame_button_2 = customtkinter.CTkButton(self.prac_frame, text="DISABLE AUTO CHECK", corner_radius=5, font=('Calibri', 12), command=self.end_in_bg_spar)
         self.prac_frame_button_2.grid(row=1, column=0, padx=10, pady=10, sticky="E")
 
         self.search_label_spar = customtkinter.CTkLabel(self.prac_frame, text=f'Waiting for search to start...', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
@@ -454,6 +440,10 @@ class App(customtkinter.CTk):
     def start_in_bg_spar(self):
         checkThreadSpar = threading.Thread(target=self.loop_check_spar)
         checkThreadSpar.start()
+
+    def end_in_bg_spar(self):
+        endSparThread = threading.Thread(target=self.end_loop_spar)
+        endSparThread.start()
 
 
     def initial_test(self):
