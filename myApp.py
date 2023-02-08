@@ -427,6 +427,7 @@ class App(customtkinter.CTk):
 
 
             time.sleep(10)
+        self.end_in_bg_spar()
 
 
     def end_loop_spar(self):
