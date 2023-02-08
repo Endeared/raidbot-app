@@ -411,7 +411,9 @@ class App(customtkinter.CTk):
         self.third_label = customtkinter.CTkLabel(self.prac_frame, text=f'{callData3Val}', compound="left", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.third_label.grid(row=5, column=0, columnspan=3, padx=10, pady=0)
 
-        toRemoveSpar.append(self.first_label, self.second_label, self.third_label)
+        toRemoveSpar.append(self.first_label)
+        toRemoveSpar.append(self.second_label)
+        toRemoveSpar.append(self.third_label)
         
         searchingSpar = True
         self.search_label_spar.configure(text="Currently searching for spars...")
